@@ -1,0 +1,45 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import type { Project } from '../types/project';
+
+export interface Props {}
+
+const projects: Project[] = [
+  {
+    title: 'victorchicano.dev',
+    description:
+      'Portfolio y blog técnico personal de alto rendimiento construido con arquitectura de islas de Astro, TypeScript en modo estricto y Tailwind CSS.',
+    tags: ['Astro', 'TypeScript', 'Tailwind CSS', 'SSG'],
+    githubUrl: 'https://github.com/victorchicano/victorchicano-dev',
+    liveUrl: 'https://victorchicano.dev'
+  },
+  {
+    title: 'Cloud Event-Driven API (.NET & AWS)',
+    description:
+      'Arquitectura de microservicios orientada a eventos con .NET 8, colas AWS SQS/SNS, PostgreSQL y despliegue automatizado con Terraform y GitHub Actions.',
+    tags: ['.NET 8', 'AWS', 'Terraform', 'Docker', 'PostgreSQL'],
+    githubUrl: 'https://github.com/victorchicano/cloud-events-api'
+  }
+];
+---
+
+<Layout
+  title="Proyectos | Víctor Chicano"
+  description="Proyectos de software, arquitectura cloud y desarrollo web construidos por Víctor Chicano."
+>
+  <main class="max-w-3xl mx-auto px-6 py-12">
+    <header class="space-y-3 mb-12">
+      <h1 class="text-3xl font-bold tracking-tight text-white">
+        Proyectos
+      </h1>
+      <p class="text-neutral-400 text-sm leading-relaxed">
+        Selección de herramientas, arquitecturas cloud y aplicaciones open source en las que he trabajado.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {projects.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </main>
+</Layout>
