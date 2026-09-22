@@ -1,0 +1,43 @@
+---
+export interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = Astro.url.pathname } = Astro.props;
+
+const navItems: Array<{ href: string; label: string }> = [
+  { href: '/', label: 'Inicio' },
+  { href: '/blog', label: 'Blog' }
+];
+---
+
+<header class="border-b border-neutral-800/80 bg-neutral-950/70 backdrop-blur-md sticky top-0 z-50">
+  <div class="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="/" class="font-mono text-sm font-semibold tracking-tight text-white hover:text-emerald-400 transition-colors">
+      victorchicano<span class="text-emerald-400">.dev</span>
+    </a>
+    
+    <nav class="flex items-center gap-6 text-sm font-medium">
+      {
+        navItems.map((item) => {
+          const isActive =
+            item.href === '/'
+              ? currentPath === '/'
+              : currentPath.startsWith(item.href);
+          return (
+            <a
+              href={item.href}
+              class={`transition-colors ${
+                isActive
+                  ? 'text-emerald-400'
+                  : 'text-neutral-400 hover:text-neutral-200'
+              }`}
+            >
+              {item.label}
+            </a>
+          );
+        })
+      }
+    </nav>
+  </div>
+</header>

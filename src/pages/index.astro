@@ -1,0 +1,87 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+
+export interface Props {}
+
+const latestPosts = (
+  await getCollection('blog', ({ data }) => !data.draft)
+)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<Layout title="Víctor Chicano | Senior Frontend & Cloud Engineer">
+  <main class="max-w-3xl mx-auto px-6 py-16 flex flex-col gap-16">
+    <section class="space-y-6">
+      <div class="space-y-2">
+        <p class="text-sm font-mono text-emerald-400">victorchicano.dev</p>
+        <h1 class="text-3xl sm:text-5xl font-bold tracking-tight text-white">
+          Víctor Chicano
+        </h1>
+        <p class="text-lg sm:text-xl text-neutral-400">
+          Senior Frontend & Cloud Engineer
+        </p>
+      </div>
+
+      <p class="text-neutral-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+        Ingeniero de software enfocado en la construcción de interfaces de alto rendimiento, arquitecturas frontend modernas y sistemas cloud resilientes y automatizados.
+      </p>
+
+      <div class="flex items-center gap-3 pt-2">
+        <a
+          href="/blog"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500 text-neutral-950 font-medium text-sm hover:bg-emerald-400 transition-colors"
+        >
+          Explorar Blog
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="space-y-6 border-t border-neutral-800/80 pt-12">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-bold tracking-tight text-white">
+          Últimas publicaciones
+        </h2>
+        <a
+          href="/blog"
+          class="text-xs font-mono text-neutral-400 hover:text-emerald-400 transition-colors"
+        >
+          Ver todas ({latestPosts.length}) →
+        </a>
+      </div>
+
+      <div class="space-y-4">
+        {
+          latestPosts.map((post) => (
+            <article class="group relative flex flex-col p-5 -mx-5 rounded-xl transition-colors hover:bg-neutral-900/40 border border-transparent hover:border-neutral-800/60">
+              <div class="flex items-center gap-3 mb-1.5">
+                <FormattedDate date={post.data.pubDate} />
+                <div class="flex items-center gap-1.5">
+                  {post.data.tags.slice(0, 2).map((tag) => (
+                    <span class="text-xs px-2 py-0.5 rounded font-mono bg-neutral-900 text-neutral-400 border border-neutral-800">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <h3 class="text-lg font-semibold text-neutral-100 group-hover:text-emerald-400 transition-colors">
+                <a href={`/blog/${post.slug}`}>
+                  <span class="absolute -inset-y-0 -inset-x-0 rounded-xl" />
+                  {post.data.title}
+                </a>
+              </h3>
+
+              <p class="mt-1 text-sm text-neutral-400 line-clamp-2">
+                {post.data.description}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+</Layout>
